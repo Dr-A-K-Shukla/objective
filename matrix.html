@@ -178,6 +178,50 @@
     color: #777;
     margin: 20px 0;
   }
+   .title-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #ffffff, #f8fafc);
+    border: 1px solid #d1d5db;
+    border-radius: 16px;
+    padding: 42px 28px;
+    margin: 50px auto;
+    max-width: 760px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  }
+
+  .title {
+    font-family: "Poppins", "Segoe UI", sans-serif;
+    text-align: center;
+  }
+
+  .title .course {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 6px;
+  }
+
+  .title .subject {
+    font-size: 2.1rem;
+    font-weight: 700;
+    color: #0f172a; /* deep navy blue */
+    letter-spacing: 0.5px;
+    position: relative;
+  }
+
+  .title .subject::after {
+    content: "";
+    display: block;
+    width: 100px;
+    height: 3px;
+    background: #1e3a8a; /* dark blue underline */
+    margin: 10px auto 0;
+    border-radius: 3px;
+  }
 </style>
 </head>
 <body>
@@ -236,6 +280,12 @@
 
 
 </header>
+  <div class="title-container">
+  <div class="title">
+    <div class="course">B.Sc. I (Semester-II)</div>
+    <div class="subject">Matrices and Differential Equations – Objective Questions Collection</div>
+  </div>
+</div>
 <main>
   <!-- Chapter I -->
   <div class="chapter">
@@ -303,6 +353,7 @@
 
 </body>
 </html>
+
 
 
 
