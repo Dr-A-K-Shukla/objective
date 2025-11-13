@@ -652,5 +652,149 @@ const answers = {
 });
 </script>
 
+<script>
+(function() {
+  const questionsPerPage = 10;
+  const form = document.getElementById("quizForm");
+  const allQuestions = Array.from(form.querySelectorAll(".question"));
+  const totalPages = Math.ceil(allQuestions.length / questionsPerPage);
+  let currentPage = 1;
+
+  // Create pagination container
+  const paginationContainer = document.createElement("div");
+  paginationContainer.style.display = "flex";
+  paginationContainer.style.justifyContent = "center";
+  paginationContainer.style.gap = "10px";
+  paginationContainer.style.marginTop = "20px";
+  form.appendChild(paginationContainer);
+
+  function showPage(page) {
+    currentPage = page;
+    const start = (page - 1) * questionsPerPage;
+    const end = start + questionsPerPage;
+    allQuestions.forEach((q, i) => {
+      q.style.display = (i >= start && i < end) ? "block" : "none";
+    });
+    renderPagination();
+  }
+
+  function renderPagination() {
+    paginationContainer.innerHTML = "";
+
+    const prevBtn = document.createElement("button");
+    prevBtn.type = "button";
+    prevBtn.textContent = "Prev";
+    prevBtn.disabled = currentPage === 1;
+    prevBtn.onclick = () => showPage(currentPage - 1);
+    paginationContainer.appendChild(prevBtn);
+
+    for (let i = 1; i <= totalPages; i++) {
+      const pageBtn = document.createElement("button");
+      pageBtn.type = "button";
+      pageBtn.textContent = i;
+      pageBtn.style.fontWeight = (i === currentPage) ? "bold" : "normal";
+      pageBtn.onclick = () => showPage(i);
+      paginationContainer.appendChild(pageBtn);
+    }
+
+    const nextBtn = document.createElement("button");
+    nextBtn.type = "button";
+    nextBtn.textContent = "Next";
+    nextBtn.disabled = currentPage === totalPages;
+    nextBtn.onclick = () => showPage(currentPage + 1);
+    paginationContainer.appendChild(nextBtn);
+  }
+
+  // Initial page show
+  showPage(1);
+
+  // Page-specific submit with popup
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    // ✅ Updated Answer Key
+    const answers = {
+      q1:  "C", q2:  "B", q3:  "C", q4:  "A", q5:  "D",
+      q6:  "C", q7:  "A", q8:  "D", q9:  "B", q10: "A",
+      q11: "C", q12: "B", q13: "C", q14: "A", q15: "D",
+      q16: "C", q17: "A", q18: "D", q19: "B", q20: "A",
+      q21: "C", q22: "D", q23: "B", q24: "C", q25: "A",
+      q26: "B", q27: "C", q28: "A", q29: "D", q30: "C",
+      q31: "A", q32: "D", q33: "B", q34: "A", q35: "C",
+      q36: "A", q37: "D", q38: "B", q39: "C", q40: "A"
+    };
+
+    const start = (currentPage - 1) * questionsPerPage;
+    const end = start + questionsPerPage;
+    const pageQuestions = allQuestions.slice(start, end);
+
+    let score = 0;
+    let wrong = [];
+
+    pageQuestions.forEach(q => {
+      const key = q.querySelector("input[type=radio]").name;
+      const selected = q.querySelector(`input[name="${key}"]:checked`);
+      if (selected && selected.value === answers[key]) {
+        score++;
+      } else {
+        wrong.push(key);
+      }
+    });
+
+    const popup = document.getElementById("resultPopup");
+
+    // Build popup content with improved styling
+    let resultText = `
+      <div style="
+        padding: 20px; 
+        background: #f0f8ff; 
+        border-radius: 12px; 
+        text-align: center; 
+        font-family: Arial, sans-serif; 
+        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      ">
+        <h2 style="color: #0077cc; margin-bottom: 5px;">🎉 Congratulations!</h2>
+        <h3 style="color: #333; margin-bottom: 15px;">Page ${currentPage} Result</h3>
+        <p style="font-size: 16px; margin-bottom: 10px;">✅ Correct: <strong>${score} / ${pageQuestions.length}</strong></p>
+    `;
+
+    // Add incorrect questions if any
+    if (wrong.length > 0) {
+      resultText += `<p style="font-size: 15px; color: #cc0000;">❌ Incorrect Questions: ${wrong.join(", ").toUpperCase()}</p>`;
+    }
+
+    // Add close button
+    resultText += `
+        <button id="closePopupBtn" style="
+          margin-top: 15px; 
+          padding: 8px 20px; 
+          border: none; 
+          border-radius: 8px; 
+          background: linear-gradient(90deg, #0077cc, #00aaff); 
+          color: white; 
+          font-size: 15px; 
+          cursor: pointer;
+          transition: 0.3s;
+        " 
+        onmouseover="this.style.opacity=0.8" 
+        onmouseout="this.style.opacity=1">
+          Close
+        </button>
+      </div>
+    `;
+
+    popup.innerHTML = resultText;
+    popup.style.display = "block";
+
+    // Close button functionality
+    document.getElementById("closePopupBtn").onclick = function() {
+      popup.style.display = "none";
+    };
+
+  });
+})();
+</script>
+
+  
 </body>
 </html>
